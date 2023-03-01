@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class Operations {
     private final String filePath = "src/main/resources/db.json";
@@ -60,15 +61,34 @@ public class Operations {
 
     public void delete(int id) {
         Map<Integer, Person> map = getMapObjects();
-        map.remove(id);
-        saveMapToFile(map);
+        Person person;
+        try {
+            person = getById(id);
+            System.out.print("Are you sure to delete the object: " + person.toString() + " ?");
+            Scanner scanner = new Scanner(System.in);
+            String answer = scanner.next();
+            boolean tryAgain = true;
+            do {
+                if("y".equals(answer)) {
+                    tryAgain = false;
+                    map.remove(id);
+                    saveMapToFile(map);
+                }
+                if("n".equals(answer)) {
+                    tryAgain = false;
+                }
+            } while(tryAgain);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Object with ID=" + id + " not found");
+        }
+
     }
 
     private Map<Integer, Person> getMapObjects() {
         ObjectMapper mapper = getMapper();
         Map<Integer, Person> map = null;
         try {
-            map = mapper.readValue(file, new TypeReference<>(){});
+            map = mapper.readValue(file, new TypeReference<TreeMap<Integer, Person>>(){});
         } catch (IOException e) {
             System.out.println("File access error: " + e);
         }

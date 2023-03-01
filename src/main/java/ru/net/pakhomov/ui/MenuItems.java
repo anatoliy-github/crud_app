@@ -29,7 +29,7 @@ public enum MenuItems {
                 return item;
             }
         }
-        throw new IllegalArgumentException("Wrong number");
+        throw new IllegalArgumentException("Wrong menu item. Try again: ");
     }
 
 }

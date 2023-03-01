@@ -24,6 +24,7 @@ public class ConsoleUserInterface implements UserInterface {
     @Override
     public void start() {
         System.out.print(ANSI_BLUE + WELCOME + ANSI_RESET);
+
         showMenu();
         MenuItems item = getMenuItem();
         processOperation(item);
